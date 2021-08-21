@@ -3,6 +3,9 @@ import sqlite3
 from flask import Flask, jsonify, json, render_template, request, url_for, redirect, flash
 from werkzeug.exceptions import abort
 
+import logging
+import sys
+
 # Function to get a database connection.
 # This function connects to database with the name `database.db`
 def get_db_connection():
@@ -36,13 +39,27 @@ def index():
 def post(post_id):
     post = get_post(post_id)
     if post is None:
-      return render_template('404.html'), 404
+
+        ## log line
+        app.logger.info('A non-existing article was accessed.')
+
+        return render_template('404.html'), 404
     else:
-      return render_template('post.html', post=post)
+
+        post_title = post[2]
+
+        ## log line
+        app.logger.info('Article "{}" was retrieved.'.format(post_title))
+
+        return render_template('post.html', post=post)
 
 # Define the About Us page
 @app.route('/about')
 def about():
+
+    ## log line
+    app.logger.info('"About Us" page was retrieved.')
+
     return render_template('about.html')
 
 # Define the post creation functionality 
@@ -61,10 +78,56 @@ def create():
             connection.commit()
             connection.close()
 
+            ## log line
+            app.logger.info('Article "{}" was created.'.format(title))
+
             return redirect(url_for('index'))
 
     return render_template('create.html')
 
+# Define the Healthcheck endpoint
+@app.route('/healthz')
+def healthz():
+
+    response = app.response_class(
+            response = json.dumps({"result":"OK - healthy"}),
+            status = 200,
+            mimetype = 'application/json'
+            )
+
+    return response
+
+@app.route('/metrics')
+def metrics():
+
+    connection = get_db_connection()
+    
+    cursor = connection.cursor()
+    cursor.execute('SELECT COUNT(*) FROM posts')
+    
+    post_count = cursor.fetchone()[0]
+    db_connection_count = 1
+
+    connection.close()
+    
+    response = app.response_class(
+            response=json.dumps({"db_connection_count":db_connection_count,"post_count":post_count}),
+            status=200,
+            mimetype='application/json'
+            )
+
+    return response
+
 # start the application on port 3111
 if __name__ == "__main__":
-   app.run(host='0.0.0.0', port='3111')
+
+    ## stream logs to app.log file
+    logging.basicConfig(
+            format='%(levelname)s:%(name)s %(message)s',
+            datefmt='%m/%d/%Y %I:%M:%S %p',
+            handlers=[
+            ##    logging.FileHandler('app.log'),
+                logging.StreamHandler(),],
+            level=logging.DEBUG)
+
+    app.run(host='0.0.0.0', port='3111', debug=False)
