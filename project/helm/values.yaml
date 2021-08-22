@@ -26,8 +26,14 @@ resources:
   limits:
     memory: "128Mi"
     cpu: "500m"
-  containerPort: 3111
-  livenessProbe:
-    path: healthz
-  readinessProbe: 
-    path: healthz
+    
+## The container
+containerPort: 3111
+
+## The livenessProbe
+livenessProbe:
+  path: healthz
+
+## The readinessProbe
+readinessProbe: 
+  path: healthz
