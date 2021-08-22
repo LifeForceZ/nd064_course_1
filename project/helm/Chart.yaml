@@ -1,0 +1,16 @@
+## The chart API version
+apiVersion: v1
+
+## The name of the chart
+name: techtrends
+
+## A list of keywords
+keywords:
+- techtrends
+
+## The chart version
+version: 1.0.0
+
+## The list of maintainers
+maintainers:
+- name: Eugene

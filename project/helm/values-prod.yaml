@@ -1,0 +1,23 @@
+## The name of the namespace
+namespace:
+  name: prod
+
+## The service port
+service:
+  port: 7111
+
+## The image policy
+image:
+  pullPolicy: Always
+
+## The number of replicas
+replicaCount: 5
+
+## The resources
+resources:
+  requests:
+    memory: "128Mi"
+    cpu: "350m"
+  limits:
+    memory: "256Mi"
+    cpu: "500m"

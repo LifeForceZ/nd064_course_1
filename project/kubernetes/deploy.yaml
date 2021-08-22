@@ -10,13 +10,13 @@ spec:
   replicas: 1
   selector:
     matchLabels:
-      app: sandbox
+      app: techtrends
   strategy: {}
   template:
     metadata:
       creationTimestamp: null
       labels:
-        app: sandbox
+        app: techtrends
     spec:
       containers:
       - image: elym91/techtrends:latest
