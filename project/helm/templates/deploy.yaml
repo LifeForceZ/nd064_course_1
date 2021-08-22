@@ -19,17 +19,17 @@ spec:
         app: techtrends
     spec:
       containers:
-      - image: elym91/{{ .Values.image.repository }}:{{ .Values.image.tag }}
+      - image: {{ .Values.image.repository }}:{{ .Values.image.tag }}
         name: techtrends
         ports:
         - containerPort: {{ .Values.containerPort }}
         livenessProbe:
           httpGet:
-            path: {{ .Values.livenessProbe.httpGet.path }}
+            path: {{ .Values.livenessProbe.path }}
             port: {{ .Values.containerPort }}
         readinessProbe:
           httpGet:
-            path: {{ .Values.readinessProbe.httpGet.path }}
+            path: {{ .Values.readinessProbe.path }}
             port: {{ .Values.containerPort }}
         resources:
           requests:
