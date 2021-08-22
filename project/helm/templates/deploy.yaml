@@ -26,11 +26,11 @@ spec:
         livenessProbe:
           httpGet:
             path: /healthz
-            port: {{ .Values.containerPort }}
+            port: {{ .Values.containerPort.path }}
         readinessProbe:
           httpGet:
             path: /healthz
-            port: {{ .Values.containerPort }}
+            port: {{ .Values.containerPort.path }}
         resources:
           requests:
             cpu: {{ .Values.resources.requests.cpu }}
