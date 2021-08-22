@@ -27,5 +27,7 @@ resources:
     memory: "128Mi"
     cpu: "500m"
   containerPort: 3111
-  livenessProbe: /healthz
-  readinessProbe: /healthz
+  livenessProbe:
+    path: /healthz
+  readinessProbe: 
+    path: /healthz
