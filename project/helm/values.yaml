@@ -11,8 +11,7 @@ service:
 
 ## The image to execute
 image:
-  repository:
-    elym91/techtrends
+  repository: elym91/techtrends
   tag: latest
   pullPolicy: IfNotPresent
 
@@ -28,7 +27,5 @@ resources:
     memory: "128Mi"
     cpu: "500m"
   containerPort: 3111
-  livenessProbe:
-    path: /healthz
-  readinessProbe:
-    path: /healthz
+  livenessProbe: /healthz
+  readinessProbe: /healthz
